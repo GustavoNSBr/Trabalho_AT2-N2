@@ -9,4 +9,5 @@
 
 void limparTela();
 void pausarTela();
-void configurarAmbiente();
+void configurarAmbiente();,
+void exibirMenu(FILE* arquivo, Musica* musica, int* qtdMusicas);
