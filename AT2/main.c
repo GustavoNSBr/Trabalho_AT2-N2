@@ -1,41 +1,35 @@
-#include <stdio.h>
-#include <malloc.h>
+/* main.c */
 
-#include "./include/types.h"
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "./include/types.h"	
 #include "./include/functions.h"
 
-// Função principal;
 int main(void) {
-	// Configurando o ambiente de execução;
-	configurarAmbiente();
+    configurarAmbiente();
 
-	FILE* arquivo = fopen(CAMINHO_ARQUIVO, "r");
+    FILE* arquivo = fopen(CAMINHO_ARQUIVO, "r+");
+    if (arquivo == NULL) {
+        printf("Não foi possível abrir o arquivo. Encerrando o programa...\n");
+        return 1;
+    }
 
-	if(arquivo == NULL) {
-		printf("Não foi possível abrir o arquivo. Encerrando o programa...\n");
-		return 1;
-	} else {
-		Musica* musica = (Musica*) malloc(QTD_MAX_MUSICAS * sizeof(Musica));
+    Musica* head = NULL;
+    lerArquivo(arquivo, &head);
+    exibirMenu(arquivo, &head);
 
-		if(musica == NULL) {
-			printf("Não foi possível alocar a memória. Encerrando o programa...\n");
-			return 1;
-		} else {
-			int qtdMusicas = 0;
+    // Liberando memória alocada
+    Musica* atual = head;
+    if (head != NULL) {
+        do {
+            Musica* prox = atual->next;
+            free(atual);
+            atual = prox;
+        } while (atual != head);
+    }
 
-			// Lendo o arquivo e salvando as informações na struct Musica;
-			lerArquivo(arquivo, musica, &qtdMusicas);
-
-			// Exibindo o menu principal;
-			exibirMenu(arquivo, musica, &qtdMusicas);
-		}
-
-		// Liberando memória alocada;
-		free(musica);
-	}
-
-	// Fechando o arquivo e encerrando o programa;
-	fclose(arquivo);
-	printf("Programa encerrado com sucesso!\n");
-	return 0;
+    fclose(arquivo);
+    printf("Programa encerrado com sucesso!\n");
+    return 0;
 }

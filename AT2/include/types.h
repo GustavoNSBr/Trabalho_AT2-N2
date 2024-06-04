@@ -1,8 +1,12 @@
-#pragma once
+/* types.h */
 
-#include "../include/types.h"
+#pragma once
 
 #define CAMINHO_ARQUIVO "./musicas.txt"
 
-
-/*NESTE ARQUIVO PRECISA COLOCAR AS STRUCTS QUE SERAO USADAS*/
+typedef struct Musica {
+    char artista[100];
+    char nome[100];
+    struct Musica* next;
+    struct Musica* prev;
+} Musica;
